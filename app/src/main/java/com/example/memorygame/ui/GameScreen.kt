@@ -20,9 +20,8 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 
 @Composable
-fun GameScreen(navController: NavController) {
+fun GameScreen(navController: NavController, settingsViewModel: SettingsViewModel) {
     val gameViewModel: GameViewModel = viewModel()
-    val settingsViewModel: SettingsViewModel = viewModel()
 
     val cards by gameViewModel.cards.collectAsState()
     val attempts by gameViewModel.attempts.collectAsState()
@@ -31,14 +30,13 @@ fun GameScreen(navController: NavController) {
     val backgroundColor = settingsViewModel.backgroundColor.collectAsState().value
     val timerEnabled by settingsViewModel.timerEnabled.collectAsState()
     val cardFlipSoundEnabled by settingsViewModel.cardFlipSoundEnabled.collectAsState()
-    var timer by remember { mutableStateOf(0) }
+    val timer by gameViewModel.timer.collectAsState()
 
     LaunchedEffect(timerEnabled) {
         if (timerEnabled) {
-            while (true) {
-                delay(1000L)
-                timer++
-            }
+            gameViewModel.startTimer()
+        } else {
+            gameViewModel.stopTimer()
         }
     }
 
@@ -47,7 +45,7 @@ fun GameScreen(navController: NavController) {
     }
 
     if (gameOver) {
-        GameOverScreen(navController, timer, timerEnabled) { gameViewModel.resetGame(difficulty) }
+        GameOverScreen(navController, timer.toInt(), timerEnabled) { gameViewModel.resetGame(difficulty) }
     } else {
         Column(
             modifier = Modifier

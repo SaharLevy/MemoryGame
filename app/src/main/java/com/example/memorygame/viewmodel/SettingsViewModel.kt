@@ -6,16 +6,16 @@ import kotlinx.coroutines.flow.StateFlow
 
 class SettingsViewModel : ViewModel() {
     private val _backgroundColor = MutableStateFlow("White")
-    val backgroundColor: StateFlow<String> = _backgroundColor
+    val backgroundColor: StateFlow<String> get() = _backgroundColor
 
     private val _cardFlipSoundEnabled = MutableStateFlow(false)
-    val cardFlipSoundEnabled: StateFlow<Boolean> = _cardFlipSoundEnabled
+    val cardFlipSoundEnabled: StateFlow<Boolean> get() = _cardFlipSoundEnabled
 
     private val _timerEnabled = MutableStateFlow(false)
-    val timerEnabled: StateFlow<Boolean> = _timerEnabled
+    val timerEnabled: StateFlow<Boolean> get() = _timerEnabled
 
     private val _difficulty = MutableStateFlow("normal")
-    val difficulty: StateFlow<String> = _difficulty
+    val difficulty: StateFlow<String> get() = _difficulty
 
     fun setBackgroundColor(color: String) {
         _backgroundColor.value = color

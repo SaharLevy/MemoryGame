@@ -99,6 +99,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
                     if (_attempts.value >= maxAttempts) {
                         Log.d("GameViewModel", "Game over")
                         _gameOver.value = true
+                        stopTimer() // Stop the timer when the game is over
                     }
                 }
                 _cards.value = currentCards // Update the state to reflect the changes
@@ -113,7 +114,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         _attempts.value = 0
         _gameOver.value = false
         firstSelectedCard = null
-        startTimer()
+        startTimer() // Start the timer when the game is reset
     }
 
     private fun generateCards(difficulty: String): List<Card> {

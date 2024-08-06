@@ -37,9 +37,9 @@ fun MemoryGameApp() {
     Box(modifier = Modifier.background(Color(android.graphics.Color.parseColor(backgroundColor)))) {
         NavHost(navController = navController, startDestination = "home") {
             composable("home") { HomeScreen(navController) }
-            composable("game") { GameScreen(navController) }
-            composable("settings") { SettingsScreen(navController) }
-            composable("difficulty_selection") { DifficultySelectionScreen(navController) }
+            composable("game") { GameScreen(navController, settingsViewModel) }
+            composable("settings") { SettingsScreen(navController, settingsViewModel) }
+            composable("difficulty_selection") { DifficultySelectionScreen(navController, settingsViewModel) }
         }
     }
 }
