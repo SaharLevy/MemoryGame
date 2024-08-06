@@ -2,7 +2,7 @@ package com.example.memorygame.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,8 +17,12 @@ fun HomeScreen(navController: NavController) {
     ) {
         Text(text = "Memory Game", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { navController.navigate("difficulty") }) {
+        Button(onClick = { navController.navigate("difficulty_selection") }) {
             Text(text = "Start Game")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = { navController.navigate("settings") }) {
+            Text(text = "Settings")
         }
     }
 }

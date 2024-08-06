@@ -9,13 +9,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun GameOverScreen(navController: NavController, onRestart: () -> Unit) {
+fun GameOverScreen(navController: NavController, timer: Int, timerEnabled: Boolean, onRestart: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "Game Over", style = MaterialTheme.typography.headlineMedium)
+        if (timerEnabled) {
+            Text(text = "Total Time: $timer seconds", style = MaterialTheme.typography.bodyMedium)
+        }
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onRestart) {
             Text(text = "Start Again")

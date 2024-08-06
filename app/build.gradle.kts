@@ -63,6 +63,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.1.0")
     implementation("com.google.accompanist:accompanist-flowlayout:0.30.0") // Use a stable version
     implementation("androidx.compose.foundation:foundation:1.4.3") // Use LazyVerticalGrid from Jetpack Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

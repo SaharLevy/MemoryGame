@@ -3,25 +3,26 @@ package com.example.memorygame
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.memorygame.ui.DifficultySelectionScreen
-import com.example.memorygame.ui.GameScreen
-import com.example.memorygame.ui.HomeScreen
+import com.example.memorygame.ui.*
 import com.example.memorygame.ui.theme.MemoryGameTheme
+import com.example.memorygame.viewmodel.SettingsViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MemoryGameTheme {
-                Surface(color = MaterialTheme.colorScheme.background) {
-                    MemoryGameApp()
-                }
+                MemoryGameApp()
             }
         }
     }
@@ -30,11 +31,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MemoryGameApp() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "home") {
-        composable("home") { HomeScreen(navController) }
-        composable("difficulty") { DifficultySelectionScreen(navController) }
-        composable("game/{difficulty}") { backStackEntry ->
-            GameScreen(navController, backStackEntry.arguments?.getString("difficulty") ?: "normal")
+    val settingsViewModel: SettingsViewModel = viewModel()
+    val backgroundColor = settingsViewModel.backgroundColor.collectAsState().value
+
+    Box(modifier = Modifier.background(Color(android.graphics.Color.parseColor(backgroundColor)))) {
+        NavHost(navController = navController, startDestination = "home") {
+            composable("home") { HomeScreen(navController) }
+            composable("game") { GameScreen(navController) }
+            composable("settings") { SettingsScreen(navController) }
+            composable("difficulty_selection") { DifficultySelectionScreen(navController) }
         }
     }
 }

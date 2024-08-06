@@ -6,25 +6,31 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.memorygame.viewmodel.SettingsViewModel
 
 @Composable
-fun DifficultySelectionScreen(navController: NavController) {
+fun DifficultySelectionScreen(navController: NavController, settingsViewModel: SettingsViewModel = viewModel()) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Select Difficulty", style = MaterialTheme.typography.headlineMedium)
+        Text(text = "Select Difficulty", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(16.dp))
-        Row {
-            Button(onClick = { navController.navigate("game/normal") }) {
-                Text("Normal")
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            Button(onClick = { navController.navigate("game/hard") }) {
-                Text("Hard")
-            }
+        Button(onClick = {
+            settingsViewModel.setDifficulty("normal")
+            navController.navigate("game")
+        }) {
+            Text(text = "Normal")
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(onClick = {
+            settingsViewModel.setDifficulty("hard")
+            navController.navigate("game")
+        }) {
+            Text(text = "Hard")
         }
     }
 }

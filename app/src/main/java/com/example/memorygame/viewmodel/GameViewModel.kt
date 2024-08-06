@@ -1,16 +1,19 @@
 package com.example.memorygame.viewmodel
 
+import android.app.Application
+import android.media.MediaPlayer
 import android.util.Log
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.memorygame.R
 import com.example.memorygame.model.Card
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class GameViewModel : ViewModel() {
+class GameViewModel(application: Application) : AndroidViewModel(application) {
     private val _cards = MutableStateFlow<List<Card>>(emptyList())
     val cards: StateFlow<List<Card>> get() = _cards
 
@@ -20,10 +23,31 @@ class GameViewModel : ViewModel() {
     private val _gameOver = MutableStateFlow(false)
     val gameOver: StateFlow<Boolean> get() = _gameOver
 
+    private val mediaPlayer = MediaPlayer.create(application, R.raw.cardflip)
     private var firstSelectedCard: Card? = null
     private val maxAttempts = 5
 
-    fun onCardClicked(card: Card) {
+    private val _timer = MutableStateFlow(0L)
+    val timer: StateFlow<Long> get() = _timer
+
+    private var timerJob: Job? = null
+
+    fun startTimer() {
+        timerJob?.cancel()
+        _timer.value = 0L
+        timerJob = viewModelScope.launch {
+            while (true) {
+                delay(1000)
+                _timer.value += 1
+            }
+        }
+    }
+
+    fun stopTimer() {
+        timerJob?.cancel()
+    }
+
+    fun onCardClicked(card: Card, cardFlipSoundEnabled: Boolean) {
         Log.d("GameViewModel", "Card clicked: ${card.animalName}")
         val currentCards = _cards.value.toMutableList()
         Log.d("GameViewModel", "Current cards: $currentCards")
@@ -34,6 +58,10 @@ class GameViewModel : ViewModel() {
         if (card.isFlipped) {
             Log.d("GameViewModel", "Card already flipped")
             return
+        }
+
+        if (cardFlipSoundEnabled) {
+            mediaPlayer.start()
         }
 
         if (firstSelectedCard == null) {
@@ -85,6 +113,7 @@ class GameViewModel : ViewModel() {
         _attempts.value = 0
         _gameOver.value = false
         firstSelectedCard = null
+        startTimer()
     }
 
     private fun generateCards(difficulty: String): List<Card> {
