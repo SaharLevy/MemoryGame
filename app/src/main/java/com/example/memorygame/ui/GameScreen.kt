@@ -68,6 +68,13 @@ fun GameScreen(navController: NavController, settingsViewModel: SettingsViewMode
             } else {
                 HardDifficultyGrid(cards, gameViewModel, cardFlipSoundEnabled)
             }
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(onClick = {
+                gameViewModel.stopTimer()
+                navController.navigate("home")
+            }) {
+                Text(text = "Go to Main Page")
+            }
         }
     }
 }
