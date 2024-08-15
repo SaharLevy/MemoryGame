@@ -28,8 +28,12 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
 
         Text(text = "Background Color")
         Spacer(modifier = Modifier.height(8.dp))
-        var expanded by remember { mutableStateOf(false) }
-        Box(modifier = Modifier.fillMaxWidth()) {
+
+        // Wrapping Box in a Column to center it properly
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            var expanded by remember { mutableStateOf(false) }
             Button(onClick = { expanded = !expanded }) {
                 Text(text = backgroundColor)
             }
